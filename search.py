@@ -1,5 +1,5 @@
 """
-Module 7 Project — Semantic Search Engine
+Semantic Search Engine
 ==========================================
 search.py — query ChromaDB and return ranked results
 
@@ -46,7 +46,7 @@ def search(
                 "source":      str,
                 "chunk_index": int,
                 "distance":    float,
-                "score":       float,  # 1 - distance
+                "score":       float,  1 / (1 + distance)
             }
         Returns [] for empty queries or if the collection has no documents.
     """
@@ -82,13 +82,14 @@ def search(
         if distance_threshold is not None and distance >= distance_threshold:
             continue
         
+        distance_value = float(distance)
         # Keep the result fields and convert distance to a similarity score
         matches.append({
             "text"       : text,
             "source"     : metadata["source"],
             "chunk_index": metadata["chunk_index"],
-            "distance"   : distance,
-            "score"      : 1.0 - float(distance),
+            "distance"   : distance_value,
+            "score"      : 1.0 / (1.0 + distance_value),
         })
         
         

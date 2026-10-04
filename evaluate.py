@@ -1,14 +1,11 @@
 """
-Module 7 Project — Semantic Search Engine
+Semantic Search Engine
 ==========================================
 evaluate.py — precision and recall for your search system
 
 Run with:
     python evaluate.py
     python evaluate.py --n-results 5 --threshold 0.4
-
-Define your evaluation set in EVAL_SET, then run this script against
-different index configurations (different chunk sizes) to compare results.
 """
 
 import argparse
@@ -143,6 +140,24 @@ def evaluate(n_results: int = 5, distance_threshold: float = None):
         f"\nAverage precision: {average_precision:.3f}"
         f" | Average recall: {average_recall:.3f }"
     )
+    
+    
+def get_relevance_badge(distance):
+    """
+    Converts the ChromaDB distance into a relevance level.
+    ChromaDB distance:
+        Lower distance = more similar
+        Higher distance = less similar
+    Returns:
+        A relevance label and a color for the badge.
+    """
+    if distance < 1.45:
+        return "Highly Relevant", "green"
+    elif distance < 1.55:
+        return "Moderately Relevant", "orange"
+    else:
+        return "Low Relevance", "red"   
+
     
 
 if __name__ == "__main__":

@@ -1,5 +1,5 @@
 """
-Module 7 Project — Semantic Search Engine
+Semantic Search Engine
 ==========================================
 ingest.py — document loading, chunking, and ChromaDB storage
 
@@ -117,6 +117,7 @@ def ingest(chunk_size: int = DEFAULT_CHUNK_SIZE, overlap: int = DEFAULT_OVERLAP)
     print(f"Source documents found: {len(documents)}")
     collection = get_collection(CHROMA_PATH, COLLECTION_NAME)
 
+    
     # Keep text, metadata, and IDs in matching positions for the batch upsert.
     all_chunks = []
     all_metadatas = []
