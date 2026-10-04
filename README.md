@@ -1,8 +1,8 @@
-# Module 7 Project — Semantic Search Engine (Starter)
+# Semantic Search Engine
 
 ## Overview
 
-Build a semantic search tool over a document collection. The tool loads, chunks,
+This is a semantic search tool built over a document collection. The tool loads, chunks,
 embeds, and stores documents in ChromaDB, then provides a Streamlit interface
 where users can type a question and see ranked results. You'll also run a
 chunking experiment and document your findings.
@@ -36,34 +36,36 @@ chunking experiment and document your findings.
 | `chroma_data/` | Persistent ChromaDB storage (created on first run) |
 | `requirements.txt` | Python dependencies |
 
-## Requirements
-
-See the project brief on the course platform for the full rubric. Key sections:
-
-1. **Document Ingestion** — load `docs/` folder, configurable chunk size/overlap,
-   store in ChromaDB with source and chunk-index metadata
-2. **Semantic Search** — ranked results with scores, configurable `n_results` and
-   threshold, edge-case handling
-3. **Streamlit Interface** — search input, sidebar controls (filter, re-index,
-   result count), at least one `st.metric()`
-4. **Chunking Experiment** — re-index at 2+ chunk sizes, run 5 identical queries,
-   compare and document findings in this README
-5. **Code Quality** — docstrings, modular files, working `requirements.txt`
 
 ## Chunking Experiment Results
 
-> Fill this section in after completing the experiment.
+source venv/bin/activate
+
+python ingest.py --chunk-size 200 --overlap 50
+python -c "from collections import Counter; from ingest import CHROMA_PATH, COLLECTION_NAME, get_collection; c=get_collection(CHROMA_PATH, COLLECTION_NAME); d=c.get(include=['metadatas']); print(Counter(m.get('chunk_size') for m in d['metadatas'] if m))"
+python evaluate.py --n-results 5
+
+python ingest.py --chunk-size 500 --overlap 50
+python -c "from collections import Counter; from ingest import CHROMA_PATH, COLLECTION_NAME, get_collection; c=get_collection(CHROMA_PATH, COLLECTION_NAME); d=c.get(include=['metadatas']); print(Counter(m.get('chunk_size') for m in d['metadatas'] if m))"
+python evaluate.py --n-results 5
 
 **Chunk sizes tested:** _e.g. 200 chars vs 500 chars_
 
 **Test queries:**
-1.
-2.
-3.
-4.
-5.
+=== Evaluation: n_results=5, threshold=None ===
+**Test queries:**
+1. What is an AI hallucination?
+2. What makes Python a dynamic programming language?
+3. How do I describe an API to a non-technical audience?
+4. How do semantic searches work in AI Engineering?
+5. How to explain relational databases in a technical interview.
+
 
 **Findings:**
 
 _Which chunk size performed better overall, and why?_
-# semantic-search-engine
+
+chunk size = 500 (Avg. Precision: 86.667, Avg. Recall: 51.667)
+chunk size = 200 (Avg. Precision: 76.667, Avg. Recall: 61.667)
+
+With these five queries, 200-character chunks produced higher precision, while 500-character chunks produced higher recall. Smaller chunks may have made some results more focused, while larger chunks preserved more surrounding context. This is a tradeoff for this corpus and query set, not a general rule.

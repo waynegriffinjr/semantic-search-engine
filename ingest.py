@@ -116,6 +116,12 @@ def ingest(chunk_size: int = DEFAULT_CHUNK_SIZE, overlap: int = DEFAULT_OVERLAP)
     documents = load_documents(str(DOCS_DIR))
     print(f"Source documents found: {len(documents)}")
     collection = get_collection(CHROMA_PATH, COLLECTION_NAME)
+    
+    # Remove previous chunks for these files so different chunk sizes
+    # are not mixed in the same collection.
+    sources = [doc["source"] for doc in documents]
+    if sources:
+        collection.delete(where={"source": {"$in": sources}})
 
     
     # Keep text, metadata, and IDs in matching positions for the batch upsert.

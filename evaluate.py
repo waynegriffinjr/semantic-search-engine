@@ -138,7 +138,7 @@ def evaluate(n_results: int = 5, distance_threshold: float = None):
     # Report the mean scores across the full evaluation set.
     print(
         f"\nAverage precision: {average_precision:.3f}"
-        f" | Average recall: {average_recall:.3f }"
+        f" | Average recall: {average_recall:.3f}"
     )
     
     

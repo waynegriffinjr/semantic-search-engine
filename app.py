@@ -31,6 +31,51 @@ st.set_page_config(
     layout="wide",
 )
 
+# st.markdown(
+#     """
+#     <style>
+#     /* Main page */
+#     .stApp,
+#     [data-testid="stMain"] {
+#         background-color: #ffffff;
+#         color: #111111;
+#     }
+
+#     [data-testid="stMain"] * {
+#         color: #111111;
+#     }
+
+#     /* Main title only; sidebar title stays white */
+#     [data-testid="stMain"] h1 {
+#         color: #c62828 !important;
+#     }
+
+#     /* Sidebar */
+#     [data-testid="stSidebar"] {
+#         background-color: #111111;
+#     }
+
+#     [data-testid="stSidebar"] * {
+#         color: #ffffff !important;
+#     }
+
+#     /* Inputs and select controls */
+#     [data-testid="stTextInput"] input,
+#     [data-baseweb="select"] {
+#         border: 1px solid #111111 !important;
+#         border-radius: 4px;
+#     }
+
+#     /* Buttons */
+#     .stButton > button,
+#     [data-testid="stFormSubmitButton"] button {
+#         border: 1px solid #111111;
+#         border-radius: 4px;
+#     }
+#     </style>
+#     """,
+#     unsafe_allow_html=True,
+# )
 
 # LOAD RESOURCES
 #_______________________________________________________
@@ -39,7 +84,6 @@ def load_resources():
     return get_collection(CHROMA_PATH, COLLECTION_NAME)
 
 collection = load_resources()
-
 
 
 # SIDEBAR — DOCUMENT MANAGEMENT
@@ -100,6 +144,8 @@ if submit_button and search_query.strip():
     )
     
     st.write(f"Form submitted! Fetching results for: {search_query}")
+    st.metric("Results returned", len(results))
+    
     
     if not results:
         st.info("No results found.")
